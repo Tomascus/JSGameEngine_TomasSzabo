@@ -5,10 +5,12 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #ff0000; /* Red background color */
 }
 
 /* Add border to the canvas element */
 canvas {
-    border: 1px solid #fff; /* 1 pixel solid white border */
+    border: 2px solid #000000; /* 2 pixels solid white border */
+    background-image: url('../resources/images/background/mountain.png'); /* Link the image */
+    background-position: center;
+ 
 }

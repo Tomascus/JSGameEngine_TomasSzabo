@@ -2,10 +2,10 @@
 import GameObject from '../engine/gameobject.js';
 
 // Import the Renderer class from the 'engine' directory
-import Renderer from '../engine/renderer.js';
+import Renderer from '../components/renderer.js';
 
 // Import the Physics class from the 'engine' directory
-import Physics from '../engine/physics.js';
+import Physics from '../components/physics.js';
 
 // Define a new class, Collectible, which extends (i.e., inherits from) GameObject
 class Collectible extends GameObject {

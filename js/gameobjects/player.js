@@ -1,13 +1,13 @@
 // Importing necessary components and resources
-import GameObject from '../engine/gameobject.js';
-import Renderer from '../engine/renderer.js';
-import Physics from '../engine/physics.js';
-import Input from '../engine/input.js';
-import { Images } from '../engine/resources.js';
+import GameObject from '../base/gameobject.js';
+import Renderer from '../components/renderer.js';
+import Physics from '../components/physics.js';
+import Input from '../components/input.js';
+import { Images } from '../components/resources.js';
 import Enemy from './enemy.js';
 import Platform from './platform.js';
 import Collectible from './collectible.js';
-import ParticleSystem from '../engine/particleSystem.js';
+import ParticleSystem from '../components/particleSystem.js';
 
 // Defining a class Player that extends GameObject
 class Player extends GameObject {

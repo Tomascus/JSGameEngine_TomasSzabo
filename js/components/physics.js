@@ -1,5 +1,5 @@
 // Import the required modules and classes.
-import Component from './component.js';
+import Component from '../base/component.js';
 import Renderer from './renderer.js';
 
 // The Physics class extends Component and handles the physics behavior of a game object.

@@ -1,5 +1,5 @@
 // Import necessary classes and resources
-import Game from '../engine/game.js';
+import Game from '../base/game.js';
 import Player from './player.js';
 import Enemy from './enemy.js';
 import PlayerUI from './playerUI.js';

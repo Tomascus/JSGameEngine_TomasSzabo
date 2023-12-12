@@ -1,5 +1,5 @@
 // Import the Component parent class.
-import Component from './component.js';
+import Component from '../base/component.js';
 
 // Define the UI class which extends the Component parent class.
 class UI extends Component {

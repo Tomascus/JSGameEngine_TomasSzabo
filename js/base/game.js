@@ -1,5 +1,5 @@
 // This class depends on the Camera, which is a separate module and needs to be imported.
-import Camera from './camera.js';
+import Camera from '../components/camera.js';
 
 // The Game class is responsible for setting up and managing the main game loop.
 class Game {

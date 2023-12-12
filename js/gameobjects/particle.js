@@ -1,7 +1,7 @@
 // The required modules and classes are imported at the top of the script.
-import GameObject from '../engine/gameobject.js';
-import Renderer from '../engine/renderer.js';
-import Physics from '../engine/physics.js';
+import GameObject from '../base/gameobject.js';
+import Renderer from '../components/renderer.js';
+import Physics from '../components/physics.js';
 
 // The Particle class extends GameObject and represents a particle in the game.
 class Particle extends GameObject {
