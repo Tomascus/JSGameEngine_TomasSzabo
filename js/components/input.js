@@ -12,6 +12,14 @@ class Input extends Component {
     // The index of the gamepad that this input component is listening to.
     this.gamepadIndex = null;
 
+    this.mousePosition = { x: 0, y: 0 };
+
+    // Add a mousemove event listener to the window
+    window.addEventListener('mousemove', (event) => {
+      this.mousePosition.x = event.clientX;
+      this.mousePosition.y = event.clientY;
+    });
+
     // Add event listeners for the keydown and keyup events.
     // When a keydown event is fired, the corresponding key in the keys object is set to true.
     // When a keyup event is fired, the corresponding key in the keys object is set to false.
@@ -28,7 +36,13 @@ class Input extends Component {
     window.addEventListener('gamepaddisconnected', (event) => {
       console.log('Gamepad disconnected:', event.gamepad);
       this.gamepadIndex = null;
+
+      
     });
+  }
+
+   getMousePosition() {
+    return this.mousePosition;
   }
 
   // This method checks if a particular key is down.

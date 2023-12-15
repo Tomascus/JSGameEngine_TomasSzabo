@@ -1,5 +1,5 @@
 // Import the GameObject class from the 'engine' directory
-import GameObject from '../engine/gameobject.js';
+import GameObject from '../base/gameobject.js';
 
 // Import the Renderer class from the 'engine' directory
 import Renderer from '../components/renderer.js';

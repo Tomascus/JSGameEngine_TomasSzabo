@@ -9,6 +9,7 @@ import Platform from './platform.js';
 import Collectible from './collectible.js';
 import ParticleSystem from '../components/particleSystem.js';
 
+
 // Defining a class Player that extends GameObject
 class Player extends GameObject {
   // Constructor initializes the game object and add necessary components
@@ -30,7 +31,9 @@ class Player extends GameObject {
     this.isInvulnerable = false;
     this.isGamepadMovement = false;
     this.isGamepadJump = false;
+    this.canTeleport = true; 
   }
+
 
   // The update function runs every frame and contains game logic
   update(deltaTime) {
@@ -39,6 +42,35 @@ class Player extends GameObject {
 
     this.handleGamepadInput(input);
     
+    // Grappling hook mechanic
+    if (input.isKeyDown('Space')) {
+      if (this.canTeleport) {
+        // Get current mouse position and store it as the target position
+        this.targetPosition = input.getMousePosition();
+        this.canTeleport = false; // Set the Grap. hook to false until the next time the button is pressed (WORK IN PROGRESS)
+      }
+
+      // Move the player towards the target position when we have the target position of the mouse
+      if (this.targetPosition) {
+        const speed = 1000; // Speed of moving towards the mouse position
+        //Calculations for the destination with a help of GITHUB COPILOT
+        const dx = this.targetPosition.x - this.x;
+        const dy = this.targetPosition.y - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance > 1) {
+          this.x += dx / distance * speed * deltaTime;
+          this.y += dy / distance * speed * deltaTime;
+        } else {
+          this.targetPosition = null;
+        }
+      }
+    } else {
+      this.canTeleport = true; //resets the grappling hook to be used again
+      this.targetPosition = null; //resets the target position after the action is done
+    }
+    
+
     // Handle player movement
     if (!this.isGamepadMovement && input.isKeyDown('ArrowRight')) {
       physics.velocity.x = 100;
@@ -107,6 +139,8 @@ class Player extends GameObject {
     }
 
     super.update(deltaTime);
+
+    
   }
 
   handleGamepadInput(input){
