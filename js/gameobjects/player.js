@@ -80,6 +80,12 @@ class Player extends GameObject {
       if (grappleLine) {
         grappleLine.endPosition = { x: this.x, y: this.y };
       }
+      
+
+     /* // Set player's velocity based on the direction of the grapple hook
+      physics.velocity.x = dx / distance * speed;
+      physics.velocity.y = dy / distance * speed;*/
+
     }
   }
 } else {
@@ -89,13 +95,16 @@ class Player extends GameObject {
 
   // Remove GrappleLine component when space is released
   this.removeComponent(GrappleLine);
+
+  /* this.x += physics.velocity.x * deltaTime;
+  this.y += physics.velocity.y * deltaTime;*/
 }
 
     // Handle player movement
-    if (!this.isGamepadMovement && input.isKeyDown('ArrowRight')) {
+    if (!this.isGamepadMovement && input.isKeyDown('ArrowRight') || (input.isKeyDown('KeyD'))) {
       physics.velocity.x = 300;
       this.direction = -1;
-    } else if (!this.isGamepadMovement && input.isKeyDown('ArrowLeft')) {
+    } else if (!this.isGamepadMovement && input.isKeyDown('ArrowLeft') || (input.isKeyDown('KeyA'))) {
       physics.velocity.x = -300;
       this.direction = 1;
     } else if (!this.isGamepadMovement) {
@@ -103,7 +112,7 @@ class Player extends GameObject {
     }
 
     // Handle player jumping
-    if (!this.isGamepadJump && input.isKeyDown('ArrowUp') && this.isOnPlatform) {
+    if ((!this.isGamepadJump && input.isKeyDown('ArrowUp')) || (input.isKeyDown('KeyW') && this.isOnPlatform)) {
       this.startJump();
     }
 
@@ -237,7 +246,7 @@ class Player extends GameObject {
 
   emitCollectParticles() {
     // Create a particle system at the player's position when a collectible is collected
-    const particleSystem = new ParticleSystem(this.x, this.y, 'yellow', 20, 1, 0.5);
+    const particleSystem = new ParticleSystem(this.x, this.y, 'blue', 20, 1, 0.5);
     this.game.addGameObject(particleSystem);
   }
 
