@@ -8,6 +8,7 @@ import Enemy from './enemy.js';
 import Platform from './platform.js';
 import Collectible from './collectible.js';
 import ParticleSystem from '../components/particleSystem.js';
+import GrappleLine from './GrappleLine.js';
 
 
 // Defining a class Player that extends GameObject
@@ -25,15 +26,15 @@ class Player extends GameObject {
     this.score = 0;
     this.isOnPlatform = false;
     this.isJumping = false;
-    this.jumpForce = 400;
+    this.jumpForce = 300;
     this.jumpTime = 0.3;
     this.jumpTimer = 0;
     this.isInvulnerable = false;
     this.isGamepadMovement = false;
     this.isGamepadJump = false;
-    this.canTeleport = true; 
+    this.canGrapple = true;
+    this.wasSpacePressed = false; 
   }
-
 
   // The update function runs every frame and contains game logic
   update(deltaTime) {
@@ -42,41 +43,60 @@ class Player extends GameObject {
 
     this.handleGamepadInput(input);
     
-    // Grappling hook mechanic
-    if (input.isKeyDown('Space')) {
-      if (this.canTeleport) {
-        // Get current mouse position and store it as the target position
-        this.targetPosition = input.getMousePosition();
-        this.canTeleport = false; // Set the Grap. hook to false until the next time the button is pressed (WORK IN PROGRESS)
-      }
+  // Grappling hook mechanic
+  if (input.isKeyDown('Space')) {
+  if (this.canGrapple && !this.wasSpacePressed) {
+    // Get current mouse position and store it as target position
+    this.targetPosition = input.getMousePosition();
+    console.log(this.targetPosition); // Logs the mouse position checks in console for my testing
 
-      // Move the player towards the target position when we have the target position of the mouse
-      if (this.targetPosition) {
-        const speed = 1000; // Speed of moving towards the mouse position
-        //Calculations for the destination with a help of GITHUB COPILOT
-        const dx = this.targetPosition.x - this.x;
-        const dy = this.targetPosition.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+   // Attach GrappleLine component
+        const grappleLine = new GrappleLine(
+          { x: this.x + this.renderer.width / 2, y: this.y + this.renderer.height / 2 }, // Adjust the starting point
+          { x: this.targetPosition.x, y: this.targetPosition.y }
+        );
+        this.addComponent(grappleLine);
 
-        if (distance > 1) {
-          this.x += dx / distance * speed * deltaTime;
-          this.y += dy / distance * speed * deltaTime;
-        } else {
-          this.targetPosition = null;
-        }
+
+    this.wasSpacePressed = true; // set the space pressed to true so that the target position is not updated further while grappling
+    this.canGrapple = false; // Set the Grap. hook to false until the next time the button is pressed 
+  }
+
+  // Continuously update the player's position while space key is held down
+  // Move the player towards the target position when we have the target position of the mouse
+  const speed = 1000; // Speed of moving towards the mouse 
+  if (this.targetPosition) {
+    //Calculations for the destination with help from GITHUB COPILOT
+    const dx = this.targetPosition.x - this.x;
+    const dy = this.targetPosition.y - this.y;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance > 1) {
+      this.x += dx / distance * speed * deltaTime;
+      this.y += dy / distance * speed * deltaTime;
+
+      // Update the end position of the GrappleLine component
+      const grappleLine = this.getComponent(GrappleLine);
+      if (grappleLine) {
+        grappleLine.endPosition = { x: this.x, y: this.y };
       }
-    } else {
-      this.canTeleport = true; //resets the grappling hook to be used again
-      this.targetPosition = null; //resets the target position after the action is done
     }
-    
+  }
+} else {
+  this.canGrapple = true; // Resets the grappling hook to be used again
+  this.targetPosition = null; // Resets the target position after the action is done
+  this.wasSpacePressed = false; // Resets the space action after the action is done (prob. could be done simpler but this worked for me)
+
+  // Remove GrappleLine component when space is released
+  this.removeComponent(GrappleLine);
+}
 
     // Handle player movement
     if (!this.isGamepadMovement && input.isKeyDown('ArrowRight')) {
-      physics.velocity.x = 100;
+      physics.velocity.x = 300;
       this.direction = -1;
     } else if (!this.isGamepadMovement && input.isKeyDown('ArrowLeft')) {
-      physics.velocity.x = -100;
+      physics.velocity.x = -300;
       this.direction = 1;
     } else if (!this.isGamepadMovement) {
       physics.velocity.x = 0;

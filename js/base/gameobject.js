@@ -21,6 +21,14 @@ class GameObject {
       component.gameObject = this;
     }
   
+    removeComponent(componentClass) {
+      // Remove the first instance of the specified component class from the components array
+      const index = this.components.findIndex((component) => component instanceof componentClass);
+      if (index !== -1) {
+        this.components.splice(index, 1);
+      }
+    }
+    
     // The update method is called once per game frame, and calls the update method on all of this GameObject's components.
     // deltaTime is the amount of time passed since the last frame, and is passed down to all components.
     update(deltaTime) {
