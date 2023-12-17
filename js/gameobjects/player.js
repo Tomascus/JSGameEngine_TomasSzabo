@@ -27,7 +27,7 @@ class Player extends GameObject {
     this.isOnPlatform = false;
     this.isJumping = false;
     this.jumpForce = 300;
-    this.jumpTime = 0.3;
+    this.jumpTime = 0.6;
     this.jumpTimer = 0;
     this.dashSpeed = 1000; 
     this.dashTimer = 0; // Sets it to dashTime when the dash has started 
@@ -38,11 +38,12 @@ class Player extends GameObject {
     this.isGamepadJump = false;
     this.canGrapple = true;
     this.wasSpacePressed = false; 
-    this.jumps = 2; // Number of jumps the player has left
     this.maxJumps = 2; // Maximum number of jumps
+    this.jumpsLeft = this.maxJumps; // Tracks jumps left
     this.jumpSound = new Audio(AudioFiles.jump);
     this.dashSound = new Audio(AudioFiles.dash);
     this.collectSound = new Audio(AudioFiles.collect);
+    this.ropeSound = new Audio(AudioFiles.rope);
   }
 
   // The update function runs every frame and contains game logic
@@ -57,6 +58,8 @@ class Player extends GameObject {
   if (this.canGrapple && !this.wasSpacePressed) {
     // Get current mouse position and store it as target position
     let targetPosition = input.getMousePosition();
+    this.ropeSound.play();
+    
 
     // Calculate distance between player and target position USING GITHUB COPILOT
     let dx = targetPosition.x - this.x;
@@ -88,7 +91,7 @@ class Player extends GameObject {
 
   // Update the players position while space key is held down every frame
   // Move the player towards the target position when we have the target position of the mouse
-  const speed = 1000; // spped of moving towards the end of the rope
+  const speed = 1000; // speed of moving towards the end of the rope
   if (this.targetPosition) {
     //Calculations for the destination with help from GITHUB COPILOT
     const dx = this.targetPosition.x - this.x;
@@ -136,12 +139,8 @@ class Player extends GameObject {
     }
 
     // Handle player jumping
-    if ((!this.isGamepadJump && input.isKeyDown('ArrowUp')) || (input.isKeyDown('KeyW'))) {
+    if ((!this.isGamepadJump && input.isKeyDown('ArrowUp')) && this.jumpsLeft > 0 || (input.isKeyDown('KeyW') && this.jumpsLeft > 0)) {
       this.startJump();
-    }
-
-    if (this.isOnPlatform) {
-      this.jumps = this.maxJumps;
     }
 
     if (this.isJumping) {
@@ -192,6 +191,7 @@ class Player extends GameObject {
           physics.acceleration.y = 0;
           this.y = (platform.y + 10 ) - this.renderer.height;
           this.isOnPlatform = true;
+          this.jumpsLeft = this.maxJumps; // Resets jumps left when on a platfrom
         }
       }
     }
@@ -258,13 +258,13 @@ class Player extends GameObject {
   }
 
   startJump() {
-    // Initiate a jump if the player is on a platform
-    if (this.jumps > 0) { 
+    // Starts a jump if the player is not already jumping and has jumps any jumps left
+    if (this.jumpsLeft > 0 && !this.isJumping) { 
       this.jumpSound.play();
       this.isJumping = true;
       this.jumpTimer = this.jumpTime;
       this.getComponent(Physics).velocity.y = -this.jumpForce;
-      this.jumps--;
+      this.jumpsLeft--;
     }
   }
   

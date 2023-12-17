@@ -10,8 +10,9 @@ const Images = {
 const AudioFiles = {
   jump: './resources/audio/jump.mp3', // The file path of the jump sound.
   collect: './resources/audio/collect.mp3', // The file path of the collect sound.
-  dash: './resources/audio/dash2.mp3', // The file path of the dash sound from: https://www.youtube.com/watch?v=NchJ1nUy-gQ&ab_channel=EpicAudioRealm
+  dash: './resources/audio/dash.mp3', // The file path of the dash sound. 
   background: './resources/audio/background.mp3', // The file path of the background music.
+  rope: './resources/audio/rope.mp3', // The file path of the rope sound.
 };
 
 // Set the source of the player image.
