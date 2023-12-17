@@ -16,7 +16,7 @@ class Player extends GameObject {
   // Constructor initializes the game object and add necessary components
   constructor(x, y) {
     super(x, y); // Call parent's constructor
-    this.renderer = new Renderer('blue', 50, 50, Images.player); // Add renderer
+    this.renderer = new Renderer('blue', 60, 60, Images.player); // Add renderer
     this.addComponent(this.renderer);
     this.addComponent(new Physics({ x: 0, y: 0 }, { x: 0, y: 0 })); // Add physics
     this.addComponent(new Input()); // Add input for handling user input
@@ -29,6 +29,10 @@ class Player extends GameObject {
     this.jumpForce = 300;
     this.jumpTime = 0.3;
     this.jumpTimer = 0;
+    this.dashSpeed = 1000; 
+    this.dashTimer = 0; // Sets it to dashTime when the dash has started 
+    this.dashTime = 0.2; // Duration of the dash in seconds
+    this.dashCooldown = 0; 
     this.isInvulnerable = false;
     this.isGamepadMovement = false;
     this.isGamepadJump = false;
@@ -62,7 +66,7 @@ class Player extends GameObject {
     this.canGrapple = false; // Set the Grap. hook to false until the next time the button is pressed 
   }
 
-  // Continuously update the player's position while space key is held down
+  // Update the players position while space key is held down every frame
   // Move the player towards the target position when we have the target position of the mouse
   const speed = 1000; // Speed of moving towards the mouse 
   if (this.targetPosition) {
@@ -75,7 +79,7 @@ class Player extends GameObject {
       this.x += dx / distance * speed * deltaTime;
       this.y += dy / distance * speed * deltaTime;
 
-      // Update the end position of the GrappleLine component
+      // Update the end position of the grapple line
       const grappleLine = this.getComponent(GrappleLine);
       if (grappleLine) {
         grappleLine.endPosition = { x: this.x, y: this.y };
@@ -93,7 +97,7 @@ class Player extends GameObject {
   this.targetPosition = null; // Resets the target position after the action is done
   this.wasSpacePressed = false; // Resets the space action after the action is done (prob. could be done simpler but this worked for me)
 
-  // Remove GrappleLine component when space is released
+  // Remove the grapple line when space is released
   this.removeComponent(GrappleLine);
 
   /* this.x += physics.velocity.x * deltaTime;
@@ -118,6 +122,22 @@ class Player extends GameObject {
 
     if (this.isJumping) {
       this.updateJump(deltaTime);
+    }
+
+     // Handle player dashing
+     if (input.isKeyDown('KeyE')) { // Assuming 'E' is the dash key
+      this.startDash();
+    }
+    
+    //Counts down to 0, when the dash stops and the cooldown begins
+    if (this.dashTimer > 0) {
+      physics.velocity.x -= this.direction * this.dashSpeed; // minus value to accurately dash in the direction of the player
+      this.dashTimer -= deltaTime;
+    }
+    
+    //Counts down time to next available dash
+    if (this.dashCooldown > 0) {
+      this.dashCooldown -= deltaTime;
     }
 
     // Handle collisions with collectibles
@@ -145,7 +165,7 @@ class Player extends GameObject {
         if (!this.isJumping) {
           physics.velocity.y = 0;
           physics.acceleration.y = 0;
-          this.y = platform.y - this.renderer.height;
+          this.y = platform.y + 10 - this.renderer.height;
           this.isOnPlatform = true;
         }
       }
@@ -204,6 +224,11 @@ class Player extends GameObject {
         this.isGamepadJump = true;
         this.startJump();
       }
+
+      // Handle dash, using gamepad button 1 (typically the 'B' button on most gamepads)
+      if (input.isGamepadButtonDown(1)) {
+      this.startDash();
+      }
     }
   }
 
@@ -222,6 +247,14 @@ class Player extends GameObject {
     this.jumpTimer -= deltaTime;
     if (this.jumpTimer <= 0 || this.getComponent(Physics).velocity.y > 0) {
       this.isJumping = false;
+    }
+  }
+
+  startDash() {
+    // Only start a dash if the player is not already dashing
+    if (this.dashTimer <= 0 && this.dashCooldown <= 0) { 
+      this.dashTimer = this.dashTime;
+      this.dashCooldown = 1; // Set cooldown to 1 sec
     }
   }
 

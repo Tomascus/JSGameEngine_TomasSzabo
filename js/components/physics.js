@@ -36,14 +36,21 @@ class Physics extends Component {
   getBoundingBox() {
     // Get the Renderer component of the game object to get its width and height.
     const renderer = this.gameObject.getComponent(Renderer);
-    // Calculate the left, right, top, and bottom edges of the bounding box.
-    const left = this.gameObject.x;
-    const right = this.gameObject.x + renderer.width;
-    const top = this.gameObject.y;
-    const bottom = this.gameObject.y + renderer.height;
-
-    // Return the bounding box.
-    return [left, right, top, bottom];
+    // If an image is provided and it has finished loading, use the image dimensions
+    if (renderer.image && renderer.image.complete) {
+      const x = this.gameObject.x;
+      const y = this.gameObject.y;
+      const w = renderer.width; // Use image width
+      const h = renderer.height; // Use image height
+      return [x + 10, x + w - 10, y + 10 , y + h - 10];
+    } else {
+      // If no image is provided or it has not finished loading, calculate the left, right, top, and bottom edges of the bounding box
+      const left = this.gameObject.x;
+      const right = this.gameObject.x + renderer.width;
+      const top = this.gameObject.y;
+      const bottom = this.gameObject.y + renderer.height;
+      return [left, right, top, bottom];
+    }
   }
 }
 

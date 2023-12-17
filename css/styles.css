@@ -11,7 +11,7 @@ body {
 /* Add border to the canvas element */
 canvas {
     border: 2px solid #fff; /* 2 pixels solid white border */
-    background-image: url('../resources/images/background/mountain.png'); /* Sets an image for the canvas */
+    background-image: url('../resources/images/background/cave.png'); /* Sets an image for the canvas */
     background-position: center;
     
 }

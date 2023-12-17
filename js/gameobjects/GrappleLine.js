@@ -1,7 +1,7 @@
 import Component from '../base/component.js';
 
 class GrappleLine extends Component {
-  constructor(startPosition, endPosition, color = 'red', lineWidth = 2) {
+  constructor(startPosition, endPosition, color = 'brown', lineWidth = 6) {
     super();
     this.startPosition = startPosition;
     this.endPosition = endPosition;

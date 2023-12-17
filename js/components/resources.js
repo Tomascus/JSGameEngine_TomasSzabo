@@ -20,7 +20,7 @@ Images.player.src = './resources/images/player/ghosty.png'; // Update the image 
 Images.enemy.src = './resources/images/enemy/flowerdog.png'; // Update the image path
 
 // Set the source of the platform image.
-Images.platform.src = './resources/images/platform/grassplatform.png'; // Update the image path
+Images.platform.src = './resources/images/platform/mossyplatform.png'; // Update the image path
 
 // Set the source of the collectible image.
 Images.collectible.src = './resources/images/collectible/gem1.png'; // Update the image path
