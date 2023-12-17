@@ -39,32 +39,39 @@ class Level extends Game {
 
     // Define the platform's width and the gap between platforms
     const platformWidth = 500;
-    const gap = 200;
+    const gap = 300;
 
     // Create platforms and add them to the game
     const platforms = [
-      new Platform(0, this.canvas.height - 20, platformWidth, 150, Images.platform),
-      new Platform(platformWidth + gap, this.canvas.height - 20, platformWidth, 150, Images.platform),
-      new Platform(2 * (platformWidth + gap), this.canvas.height - 20, platformWidth, 150, Images.platform),
-      new Platform(3 * (platformWidth + gap), this.canvas.height - 20, platformWidth, 150, Images.platform),
-      new Platform(4 * (platformWidth + gap), this.canvas.height - 20, platformWidth, 150, Images.platform),
+      new Platform(1800, 3500, 100, 150, Images.platform2),
+      new Platform(500, 3000, platformWidth, 150, Images.platform),
+      new Platform(500, 1200, platformWidth, 150, Images.platform),
+      new Platform(platformWidth + gap, 3500, platformWidth, 150, Images.platform),
+      new Platform(1.5 * (platformWidth + gap), 1500, platformWidth, 150, Images.platform),
+      new Platform(1.2 * (platformWidth + gap), 2000, platformWidth, 150, Images.platform),
+      new Platform(1.8 * (platformWidth + gap), 2500, platformWidth, 150, Images.platform),
+      new Platform(1.2 * (platformWidth + gap), 4300, platformWidth, 150, Images.platform),
+      new Platform(2 * (platformWidth + gap), 1200, platformWidth, 150, Images.platform),
+      new Platform(2 * (platformWidth + gap), 4500, platformWidth, 150, Images.platform),
+      new Platform(2 * (platformWidth + gap), 3800, platformWidth, 150, Images.platform),
     ];
     for (const platform of platforms) {
       this.addGameObject(platform);
     }
 
     const walls = [
-      new Wall(-20, -20, 100, 300, Images.wall),
-      new Wall(this.canvas.width, 0, 100, 200, Images.wall),
+      new Wall(300, 1500, 100, 300, Images.wall),
+      new Wall(2300, 2000, 100, 200, Images.wall),
+      new Wall(300, 4000, 100, 200, Images.wall),
     ];
     for (const wall of walls) {
       this.addGameObject(wall);
     }
 
     // Create enemies and add them to the game
-    this.addGameObject(new Enemy(50, this.canvas.height - 90));
-    this.addGameObject(new Enemy(platformWidth + gap + 50, this.canvas.height - 90));
-    this.addGameObject(new Enemy(2 * (platformWidth + gap) + 50, this.canvas.height - 90));
+    this.addGameObject(new Enemy(platforms[1].x + platformWidth / 2, platforms[1].y - 90));
+    this.addGameObject(new Enemy(platforms[3].x + platformWidth / 2, platforms[3].y - 90));
+    this.addGameObject(new Enemy(platforms[5].x + platformWidth / 2, platforms[5].y - 90));
 
     // Create collectibles and add them to the game
     this.addGameObject(new Collectible(250, this.canvas.height - 100, 30, 30, Images.collectible));

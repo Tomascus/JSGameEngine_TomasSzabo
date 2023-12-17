@@ -3,6 +3,7 @@ const Images = {
   player: new Image(), // The Image instance for the player.
   enemy: new Image(), // The Image instance for the enemy.
   platform: new Image(), // The Image instance for the platform.
+  platform2: new Image(), // The Image instance for the platform.
   collectible: new Image(), // The Image instance for the collectible.
   wall: new Image(), // The Image instance for the wall.
 };
@@ -24,6 +25,9 @@ Images.enemy.src = './resources/images/enemy/bat.png'; // Update the image path
 
 // Set the source of the platform image.
 Images.platform.src = './resources/images/platform/mossyplatform.png'; // Update the image path
+
+// Set the source of the platform image.
+Images.platform2.src = './resources/images/platform/mossyplatform2.png'; // Update the image path
 
 // Set the source of the wall image.
 Images.wall.src = './resources/images/wall/mossywall.png'; // Update the image path

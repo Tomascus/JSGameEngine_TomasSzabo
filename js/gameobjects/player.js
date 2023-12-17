@@ -6,6 +6,7 @@ import Input from '../components/input.js';
 import { Images, AudioFiles  } from '../components/resources.js';
 import Enemy from './enemy.js';
 import Platform from './platform.js';
+import Wall from './wall.js';
 import Collectible from './collectible.js';
 import ParticleSystem from '../components/particleSystem.js';
 import GrappleLine from './GrappleLine.js';
@@ -25,6 +26,7 @@ class Player extends GameObject {
     this.lives = 3;
     this.score = 0;
     this.isOnPlatform = false;
+    this.isOnWall = false;
     this.isJumping = false;
     this.jumpForce = 300;
     this.jumpTime = 0.6;
@@ -106,11 +108,7 @@ class Player extends GameObject {
       if (grappleLine) {
         grappleLine.endPosition = { x: this.x, y: this.y };
       }
-      
-
-     /* // Set player's velocity based on the direction of the grapple hook
-      physics.velocity.x = dx / distance * speed;
-      physics.velocity.y = dy / distance * speed;*/
+  
 
     }
   }
@@ -122,8 +120,7 @@ class Player extends GameObject {
   // Remove the grapple line when space is released
   this.removeComponent(GrappleLine);
 
-  /* this.x += physics.velocity.x * deltaTime;
-  this.y += physics.velocity.y * deltaTime;*/
+ 
 }
 
     // Handle player movement
@@ -194,9 +191,22 @@ class Player extends GameObject {
         }
       }
     }
+
+    // Check for collisions with walls
+    this.isOnWall = false;
+    const walls = this.game.gameObjects.filter((obj) => obj instanceof Wall);
+    for (const wall of walls) {
+      if (physics.isColliding(wall.getComponent(Physics))) {
+      physics.velocity.x = 0;
+      this.x = wall.x + this.renderer.width;
+      this.isOnWall = true;
+    }
+  }
+
+   
   
     //With a help of GITHUB COPILOT set custom height of the game to set boundaries of the level
-    const GAME_HEIGHT = 5000; 
+    const GAME_HEIGHT = 6000; 
 
     // Check if player has fallen off the bottom of the screen
     if (this.y > GAME_HEIGHT) {
