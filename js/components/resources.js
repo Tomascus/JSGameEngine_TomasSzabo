@@ -4,6 +4,7 @@ const Images = {
   enemy: new Image(), // The Image instance for the enemy.
   platform: new Image(), // The Image instance for the platform.
   collectible: new Image(), // The Image instance for the collectible.
+  wall: new Image(), // The Image instance for the wall.
 };
 
 // Create an AudioFiles object to hold the file paths of the audio resources.
@@ -23,6 +24,9 @@ Images.enemy.src = './resources/images/enemy/bat.png'; // Update the image path
 
 // Set the source of the platform image.
 Images.platform.src = './resources/images/platform/mossyplatform.png'; // Update the image path
+
+// Set the source of the wall image.
+Images.wall.src = './resources/images/wall/mossywall.png'; // Update the image path
 
 // Set the source of the collectible image.
 Images.collectible.src = './resources/images/collectible/gem1.png'; // Update the image path

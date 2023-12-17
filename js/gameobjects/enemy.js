@@ -28,11 +28,11 @@ class Enemy extends GameObject {
     
     // Add a Physics component to this enemy, responsible for managing its physical interactions
     // Sets the initial velocity and acceleration
-    this.addComponent(new Physics({ x: 50, y: 0 }, { x: 0, y: 0 }));
+    this.addComponent(new Physics({ x: 100, y: 0 }, { x: 0, y: 0 }));
     
     // Initialize variables related to enemy's movement
     this.movementDistance = 0;
-    this.movementLimit = 100;
+    this.movementLimit = 300;
     this.movingRight = true;
   }
 
@@ -46,7 +46,7 @@ class Enemy extends GameObject {
     if (this.movingRight) {
       // If it hasn't reached its movement limit, make it move right
       if (this.movementDistance < this.movementLimit) {
-        physics.velocity.x = 50;
+        physics.velocity.x = 200;
         this.movementDistance += Math.abs(physics.velocity.x) * deltaTime;
         this.getComponent(Renderer).gameObject.direction = 1;
       } else {
@@ -57,7 +57,7 @@ class Enemy extends GameObject {
     } else {
       // If it hasn't reached its movement limit, make it move left
       if (this.movementDistance < this.movementLimit) {
-        physics.velocity.x = -50;
+        physics.velocity.x = -200;
         this.movementDistance += Math.abs(physics.velocity.x) * deltaTime;
         this.getComponent(Renderer).gameObject.direction = -1;
       } else {

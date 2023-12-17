@@ -37,7 +37,7 @@ class Player extends GameObject {
     this.isGamepadMovement = false;
     this.isGamepadJump = false;
     this.canGrapple = true;
-    this.wasSpacePressed = false; 
+    this.SpacePressed = false; 
     this.maxJumps = 2; // Maximum number of jumps
     this.jumpsLeft = this.maxJumps; // Tracks jumps left
     this.jumpSound = new Audio(AudioFiles.jump);
@@ -55,7 +55,7 @@ class Player extends GameObject {
     
   // Grappling hook mechanic
   if (input.isKeyDown('Space')) {
-  if (this.canGrapple && !this.wasSpacePressed) {
+  if (this.canGrapple && !this.SpacePressed) {
     // Get current mouse position and store it as target position
     let targetPosition = input.getMousePosition();
     this.ropeSound.play();
@@ -85,12 +85,11 @@ class Player extends GameObject {
     );
     this.addComponent(grappleLine);
 
-    this.wasSpacePressed = true; // set the space pressed to true so that the target position is not updated further while grappling
+    this.SpacePressed = true; // set the space pressed to true so that the target position is not updated further while grappling
     this.canGrapple = false; // Set the Grap. hook to false until the next time the button is pressed 
   }
 
-  // Update the players position while space key is held down every frame
-  // Move the player towards the target position when we have the target position of the mouse
+  // Update the players position while space key is held down every frame and move towards the target position
   const speed = 1000; // speed of moving towards the end of the rope
   if (this.targetPosition) {
     //Calculations for the destination with help from GITHUB COPILOT
@@ -118,7 +117,7 @@ class Player extends GameObject {
 } else {
   this.canGrapple = true; // Resets the grappling hook to be used again
   this.targetPosition = null; // Resets the target position after the action is done
-  this.wasSpacePressed = false; // Resets the space action after the action is done (prob. could be done simpler but this worked for me)
+  this.SpacePressed = false; // Resets the space action after the action is done (prob. could be done simpler but this worked for me)
 
   // Remove the grapple line when space is released
   this.removeComponent(GrappleLine);
@@ -196,25 +195,62 @@ class Player extends GameObject {
       }
     }
   
+    //With a help of GITHUB COPILOT set custom height of the game to set boundaries of the level
+    const GAME_HEIGHT = 5000; 
+
     // Check if player has fallen off the bottom of the screen
-    if (this.y > this.game.canvas.height) {
+    if (this.y > GAME_HEIGHT) {
       this.resetPlayerState();
     }
 
-    // Check if player has no lives left
-    if (this.lives <= 0) {
-      location.reload();
-    }
+  // Creating message was IMPLMEMENTED WITH GITHUB COPILOT
+  // Check if player has no lives left 
+  if (this.lives <= 0) {
+  // Create a "You lost" message
+  const message = document.createElement('div');
+  message.style.position = 'absolute';
+  message.style.top = '50%';
+  message.style.left = '50%';
+  message.style.transform = 'translate(-50%, -50%)';
+  message.style.fontSize = '100px';
+  message.style.color = 'red';
+  message.textContent = 'You lost, Restarting...';
 
+  // Add the message to the body
+  document.body.appendChild(message);
+
+  // Wait for 3 seconds, remove the text and reset the game
+  setTimeout(() => {
+    location.reload();
+    document.body.removeChild(message);
+  }, 3000);
+}
+
+    // Creating message was IMPLMEMENTED WITH GITHUB COPILOT
     // Check if player has collected all collectibles
-    if (this.score >= 3) {
-      console.log('You win!');
+    if (this.score >= 300) {
+      // Create a "You win" message
+    const message = document.createElement('div');
+    message.style.position = 'absolute';
+    message.style.top = '50%';
+    message.style.left = '50%';
+    message.style.transform = 'translate(-50%, -50%)';
+    message.style.fontSize = '100px';
+    message.style.color = 'gold';
+    message.textContent = 'You win!';
+
+    // Add the message to the body
+    document.body.appendChild(message);
+
+    // Wait for 10 seconds, then reload the page and remove the message
+    setTimeout(() => {
       location.reload();
-    }
+      document.body.removeChild(message);
+    }, 10000);
+  }
 
     super.update(deltaTime);
 
-    
   }
 
   handleGamepadInput(input){

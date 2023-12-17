@@ -4,6 +4,7 @@ import Player from './player.js';
 import Enemy from './enemy.js';
 import PlayerUI from './playerUI.js';
 import Platform from './platform.js';
+import Wall from './wall.js';
 import Collectible from './collectible.js';
 import { Images, AudioFiles } from '../components/resources.js';
 
@@ -31,7 +32,7 @@ class Level extends Game {
     this.addGameObject(player);
     
     // Add the player UI object to the game
-    this.addGameObject(new PlayerUI(10, 10));
+    this.addGameObject(new PlayerUI(20, 20));
 
     // Set the game's camera target to the player
     this.camera.target = player;
@@ -50,6 +51,14 @@ class Level extends Game {
     ];
     for (const platform of platforms) {
       this.addGameObject(platform);
+    }
+
+    const walls = [
+      new Wall(-20, -20, 100, 300, Images.wall),
+      new Wall(this.canvas.width, 0, 100, 200, Images.wall),
+    ];
+    for (const wall of walls) {
+      this.addGameObject(wall);
     }
 
     // Create enemies and add them to the game

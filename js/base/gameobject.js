@@ -21,8 +21,9 @@ class GameObject {
       component.gameObject = this;
     }
   
+    // Coded with GITHUB COPILOT help
     removeComponent(componentClass) {
-      // Remove the first instance of the specified component class from the components array
+      // Remove first component from game object that is an instance of componentClass 
       const index = this.components.findIndex((component) => component instanceof componentClass);
       if (index !== -1) {
         this.components.splice(index, 1);
