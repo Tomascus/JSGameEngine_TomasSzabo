@@ -238,7 +238,7 @@ class Player extends GameObject {
 
     // Creating message was IMPLMEMENTED WITH GITHUB COPILOT
     // Check if player has collected all collectibles
-    if (this.score >= 300) {
+    if (this.score >= 1000) {
       // Create a "You win" message
     const message = document.createElement('div');
     message.style.position = 'absolute';
