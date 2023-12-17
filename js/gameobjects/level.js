@@ -68,15 +68,27 @@ class Level extends Game {
       this.addGameObject(wall);
     }
 
-    // Create enemies and add them to the game
-    this.addGameObject(new Enemy(platforms[1].x + platformWidth / 2, platforms[1].y - 90));
-    this.addGameObject(new Enemy(platforms[3].x + platformWidth / 2, platforms[3].y - 90));
-    this.addGameObject(new Enemy(platforms[5].x + platformWidth / 2, platforms[5].y - 90));
+    // Create enemies and add them to the game UPDATED to add enemies to platforms easier
+    this.addGameObject(new Enemy(platforms[1].x, platforms[1].y - 90));
+    this.addGameObject(new Enemy(platforms[2].x, platforms[3].y - 90));
+    this.addGameObject(new Enemy(platforms[3].x, platforms[3].y - 90));
+    this.addGameObject(new Enemy(platforms[5].x, platforms[5].y - 90));
 
     // Create collectibles and add them to the game
-    this.addGameObject(new Collectible(250, this.canvas.height - 100, 30, 30, Images.collectible));
-    this.addGameObject(new Collectible(450, this.canvas.height - 100, 30, 30, Images.collectible));
-    this.addGameObject(new Collectible(650, this.canvas.height - 100, 30, 30, Images.collectible));
+    // Create collectibles and add them to the game
+this.addGameObject(new Collectible(800, 1000, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(450, 1600, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(650, 1500, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(850, 2684, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1050, 1900, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1250, 2260, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1450, 3000, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1650, 1150, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1850, 4050, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(2050, 3000, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(2250, 2100, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1700, 3250, 30, 30, Images.collectible));
+this.addGameObject(new Collectible(1800, 4100, 30, 30, Images.collectible));
   }
   
 }
