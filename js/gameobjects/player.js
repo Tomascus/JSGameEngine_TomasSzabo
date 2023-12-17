@@ -56,16 +56,31 @@ class Player extends GameObject {
   if (input.isKeyDown('Space')) {
   if (this.canGrapple && !this.wasSpacePressed) {
     // Get current mouse position and store it as target position
-    this.targetPosition = input.getMousePosition();
+    let targetPosition = input.getMousePosition();
+
+    // Calculate distance between player and target position USING GITHUB COPILOT
+    let dx = targetPosition.x - this.x;
+    let dy = targetPosition.y - this.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+
+    // Limit the maximum distance HELPED WITH GITHUB COPILOT
+    const maxDistance = 500; 
+    if (distance > maxDistance) {
+      // Adjust target position to be at maximum distance from player
+      let ratio = maxDistance / distance;
+      targetPosition.x = this.x + dx * ratio;
+      targetPosition.y = this.y + dy * ratio;
+    }
+
+    this.targetPosition = targetPosition;
     console.log(this.targetPosition); // Logs the mouse position checks in console for my testing
 
-   // Attach GrappleLine component
-        const grappleLine = new GrappleLine(
-          { x: this.x + this.renderer.width / 2, y: this.y + this.renderer.height / 2 }, // Adjust the starting point
-          { x: this.targetPosition.x, y: this.targetPosition.y }
-        );
-        this.addComponent(grappleLine);
-
+    // Attach GrappleLine component
+    const grappleLine = new GrappleLine(
+      { x: this.targetPosition.x, y: this.targetPosition.y }, // Start from the mouse position
+      { x: this.x + this.renderer.width / 2, y: this.y + this.renderer.height / 2 } // End at the player's position
+    );
+    this.addComponent(grappleLine);
 
     this.wasSpacePressed = true; // set the space pressed to true so that the target position is not updated further while grappling
     this.canGrapple = false; // Set the Grap. hook to false until the next time the button is pressed 
@@ -73,7 +88,7 @@ class Player extends GameObject {
 
   // Update the players position while space key is held down every frame
   // Move the player towards the target position when we have the target position of the mouse
-  const speed = 1000; // Speed of moving towards the mouse 
+  const speed = 1000; // spped of moving towards the end of the rope
   if (this.targetPosition) {
     //Calculations for the destination with help from GITHUB COPILOT
     const dx = this.targetPosition.x - this.x;

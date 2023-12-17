@@ -24,7 +24,7 @@ class Enemy extends GameObject {
     
     // Add a Renderer component to this enemy, responsible for rendering it in the game.
     // The renderer uses the color 'green', dimensions 50x50, and an enemy image from the Images object
-    this.addComponent(new Renderer('green', 100, 100, Images.enemy));
+    this.addComponent(new Renderer('green', 60, 40, Images.enemy));
     
     // Add a Physics component to this enemy, responsible for managing its physical interactions
     // Sets the initial velocity and acceleration

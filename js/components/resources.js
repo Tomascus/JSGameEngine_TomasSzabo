@@ -18,7 +18,7 @@ const AudioFiles = {
 Images.player.src = './resources/images/player/ghosty.png'; // Update the image path
 
 // Set the source of the enemy image.
-Images.enemy.src = './resources/images/enemy/flowerdog.png'; // Update the image path
+Images.enemy.src = './resources/images/enemy/bat.png'; // Update the image path
 
 // Set the source of the platform image.
 Images.platform.src = './resources/images/platform/mossyplatform.png'; // Update the image path

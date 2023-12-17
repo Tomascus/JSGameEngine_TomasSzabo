@@ -1,12 +1,12 @@
 import Component from '../base/component.js';
 
 class GrappleLine extends Component {
-  constructor(startPosition, endPosition, color = 'brown', lineWidth = 6) {
+  constructor(startPosition, endPosition) {
     super();
     this.startPosition = startPosition;
     this.endPosition = endPosition;
-    this.color = color;
-    this.lineWidth = lineWidth;
+    this.color = '#DBB500';
+    this.lineWidth = 6; 
   }
 
   draw(ctx) {
