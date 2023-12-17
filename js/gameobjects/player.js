@@ -3,7 +3,7 @@ import GameObject from '../base/gameobject.js';
 import Renderer from '../components/renderer.js';
 import Physics from '../components/physics.js';
 import Input from '../components/input.js';
-import { Images } from '../components/resources.js';
+import { Images, AudioFiles  } from '../components/resources.js';
 import Enemy from './enemy.js';
 import Platform from './platform.js';
 import Collectible from './collectible.js';
@@ -38,6 +38,11 @@ class Player extends GameObject {
     this.isGamepadJump = false;
     this.canGrapple = true;
     this.wasSpacePressed = false; 
+    this.jumps = 2; // Number of jumps the player has left
+    this.maxJumps = 2; // Maximum number of jumps
+    this.jumpSound = new Audio(AudioFiles.jump);
+    this.dashSound = new Audio(AudioFiles.dash);
+    this.collectSound = new Audio(AudioFiles.collect);
   }
 
   // The update function runs every frame and contains game logic
@@ -116,8 +121,12 @@ class Player extends GameObject {
     }
 
     // Handle player jumping
-    if ((!this.isGamepadJump && input.isKeyDown('ArrowUp')) || (input.isKeyDown('KeyW') && this.isOnPlatform)) {
+    if ((!this.isGamepadJump && input.isKeyDown('ArrowUp')) || (input.isKeyDown('KeyW'))) {
       this.startJump();
+    }
+
+    if (this.isOnPlatform) {
+      this.jumps = this.maxJumps;
     }
 
     if (this.isJumping) {
@@ -145,6 +154,7 @@ class Player extends GameObject {
     for (const collectible of collectibles) {
       if (physics.isColliding(collectible.getComponent(Physics))) {
         this.collect(collectible);
+        this.collectSound.play();
         this.game.removeGameObject(collectible);
       }
     }
@@ -165,7 +175,7 @@ class Player extends GameObject {
         if (!this.isJumping) {
           physics.velocity.y = 0;
           physics.acceleration.y = 0;
-          this.y = platform.y + 10 - this.renderer.height;
+          this.y = (platform.y + 10 ) - this.renderer.height;
           this.isOnPlatform = true;
         }
       }
@@ -234,11 +244,12 @@ class Player extends GameObject {
 
   startJump() {
     // Initiate a jump if the player is on a platform
-    if (this.isOnPlatform) { 
+    if (this.jumps > 0) { 
+      this.jumpSound.play();
       this.isJumping = true;
       this.jumpTimer = this.jumpTime;
       this.getComponent(Physics).velocity.y = -this.jumpForce;
-      this.isOnPlatform = false;
+      this.jumps--;
     }
   }
   
@@ -253,6 +264,7 @@ class Player extends GameObject {
   startDash() {
     // Only start a dash if the player is not already dashing
     if (this.dashTimer <= 0 && this.dashCooldown <= 0) { 
+      this.dashSound.play();
       this.dashTimer = this.dashTime;
       this.dashCooldown = 1; // Set cooldown to 1 sec
     }

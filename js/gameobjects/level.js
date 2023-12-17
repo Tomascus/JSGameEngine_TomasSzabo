@@ -5,7 +5,7 @@ import Enemy from './enemy.js';
 import PlayerUI from './playerUI.js';
 import Platform from './platform.js';
 import Collectible from './collectible.js';
-import { Images } from '../components/resources.js';
+import { Images, AudioFiles } from '../components/resources.js';
 
 
 // Define a class Level that extends the Game class from the engine
@@ -15,6 +15,16 @@ class Level extends Game {
   constructor(canvasId) {
     // Call the constructor of the superclass (Game) with the canvas ID
     super(canvasId);
+
+    //Starts playing the background music only when the user click on the screen, due to background music policy some browsers as I learned
+    document.addEventListener('click', () => {
+      this.backgroundSound.play();
+    });
+
+    this.backgroundSound = new Audio(AudioFiles.background);
+    this.backgroundSound.loop = true;
+    this.backgroundSound.volume = 0.5;
+    this.backgroundSound.play();
     
     // Create a player object and add it to the game
     const player = new Player(this.canvas.width / 2 - 25, this.canvas.height / 2 - 25);
@@ -28,11 +38,11 @@ class Level extends Game {
 
     // Define the platform's width and the gap between platforms
     const platformWidth = 500;
-    const gap = 100;
+    const gap = 200;
 
     // Create platforms and add them to the game
     const platforms = [
-      new Platform(0, this.canvas.height - 20, platformWidth, 150),
+      new Platform(0, this.canvas.height - 20, platformWidth, 150, Images.platform),
       new Platform(platformWidth + gap, this.canvas.height - 20, platformWidth, 150, Images.platform),
       new Platform(2 * (platformWidth + gap), this.canvas.height - 20, platformWidth, 150, Images.platform),
       new Platform(3 * (platformWidth + gap), this.canvas.height - 20, platformWidth, 150, Images.platform),
